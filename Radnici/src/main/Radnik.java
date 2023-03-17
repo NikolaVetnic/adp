@@ -1,87 +1,37 @@
 package main;
 
-public class Radnik {
+public abstract class Radnik {
 
-	private String ime;
-	private String tip;
-	private int godineRada;
-	private int mesecnaPlata;
-	private int bonus;
+	protected String ime;
+	protected int godineRada;
+	protected int mesecnaPlata;
+	protected int bonus;
 
-	public Radnik(String ime, String tip) {
-		this.setIme(ime);
-		this.tip = tip;
+	public Radnik(String[] podaci) {
+		this.ime = podaci[0];
+		this.godineRada = Integer.parseInt(podaci[2].trim());
+		this.mesecnaPlata = Integer.parseInt(podaci[3].trim());
+		this.bonus = podaci.length > 4 ? Integer.parseInt(podaci[4].trim()) : 0;
 	}
 
 	public Radnik() {
 
 	}
 
-	public String getIme() {
-		return ime;
-	}
+	public String getIme() 			{ return ime; 			}
+	public int getGodineRada() 		{ return godineRada; 	}
+	public int getMesecnaPlata() 	{ return mesecnaPlata; 	}
+	public int getBonus() 			{ return bonus; 		}
 
-	public void setIme(String ime) {
-		this.ime = ime;
-	}
+	public void setIme(String ime) 					{ this.ime = ime; 					}
+	public void setGodineRada(int godineRada) 		{ this.godineRada = godineRada; 	}
+	public void setMesecnaPlata(int mesecnaPlata) 	{ this.mesecnaPlata = mesecnaPlata; }
+	public void setBonus(int bonus) 				{ this.bonus = bonus; 				}
 
-	public void setTip(String tip) {
-		this.tip = tip;
-	}
-
-	public String getTip() {
-		return tip;
-	}
-
-	public int getGodineRada() {
-		return godineRada;
-	}
-
-	public void setGodineRada(int godineRada) {
-		this.godineRada = godineRada;
-	}
-
-	public int getMesecnaPlata() {
-		return mesecnaPlata;
-	}
-
-	public void setMesecnaPlata(int mesecnaPlata) {
-		this.mesecnaPlata = mesecnaPlata;
-	}
-
-	public int getBonus() {
-		return bonus;
-	}
-
-	public void setBonus(int bonus) {
-		this.bonus = bonus;
-	}
-
-	public double izrPro() {
-		switch (getTip()) {
-		case "INZENJER":
-			return godineRada * 0.20 * mesecnaPlata;
-		case "PRODAVAC":
-			return godineRada * 0.10 * mesecnaPlata;
-		case "MENADZER":
-			return godineRada * 0.15 * mesecnaPlata;
-		default:
-			throw new RuntimeException("Neispravan tip zaposlenog");
-		}
-	}
-
-	public double isplata() {
-		switch (getTip()) {
-		case "INZENJER":
-			return mesecnaPlata + izrPro() + bonus;
-		case "PRODAVAC":
-			return mesecnaPlata + izrPro();
-		case "MENADZER":
-			return mesecnaPlata + izrPro() + (0.5 * bonus);
-		case "POMOCNI RADNIK":
-			return mesecnaPlata;
-		default:
-			throw new RuntimeException("Neispravan tip zaposlenog");
-		}
+	public abstract double izrPro();
+	public abstract double isplata();
+	
+	public String prikaziPlatu() {
+		return "".equals(ime) ? "Ovo nije radnik!\n" : ime + " prima " + this.isplata() + "\n";
 	}
 }
